@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="/template/common.xhtml">
+	
+		<ui:define name="pageTitle">
+			<h:outputText value="Product Search" />
+		</ui:define>
+	
+		<ui:define name="content">
+	    	<h:form id="searchForm">
+	    		<p:growl id="mainGrowl" sticky="true"  />
+		    	<p:panelGrid style="width:1024px">  
+				    <f:facet name="header">
+				    	<p:row>  
+		            		<p:column colspan="4">  
+				        		Product Search
+				        	</p:column>
+				        </p:row>
+				    </f:facet>  
+				  	<p:row> 
+				  		<p:column>
+				    		<h:outputLabel for="sku" value="sku: " />
+				    	</p:column>
+				    	<p:column>  
+				    		<p:inputText id="sku" value="#{productSearchBean.criteria.sku}" />
+				    	</p:column>  
+				    	<p:column>  
+				    		<h:outputLabel for="productType" value="Product Type: " />
+				    	</p:column>
+				       	<p:column>  
+				    		<p:selectOneMenu id="productType"   label="Type"   value="#{productSearchBean.criteria.productType}"  >  
+					            <f:selectItem itemLabel="Select One" itemValue="" />  
+					            <f:selectItem itemLabel="Audio Album" itemValue="Audio Album" />  
+					            <f:selectItem itemLabel="Book" itemValue="Book" /> 
+					        </p:selectOneMenu>
+				    	</p:column>
+				  	</p:row>
+				  	<p:row> 
+				  		<p:column>
+				    		<h:outputLabel for="title" value="Title: " />
+				    	</p:column>
+				    	<p:column>  
+				    		<p:inputText id="title" value="#{productSearchBean.criteria.title}" />
+				    	</p:column>  
+				    	<p:column>  
+				    		<h:outputLabel for="description" value="Description: " />
+				    	</p:column>
+				       	<p:column>  
+				    		<p:inputText id="description" value="#{productSearchBean.criteria.description}" />
+				    	</p:column>
+				  	</p:row>			  	
+		
+				  	<p:row> 
+				  		<p:column>
+				    		<h:outputLabel for="track" value="Track: " />
+				    	</p:column>
+				    	<p:column>  
+				    		<p:inputText id="track" value="#{productSearchBean.criteria.track}" />
+				    	</p:column>  
+				    	<p:column>  
+				    		<h:outputLabel for="chapter" value="Chapter: " />
+				    	</p:column>
+				       	<p:column>  
+				    		<p:inputText id="chapter" value="#{productSearchBean.criteria.chapter}" />
+				    	</p:column>
+				  	</p:row>	
+				  	
+				 </p:panelGrid>
+				 <p:commandButton value="search" icon="ui-icon-search"  actionListener="#{productSearchBean.doSearch}" update="dataTable"/>
+				 <hr/>
+	
+				 <p:dataTable id="dataTable" var="prod" value="#{productSearchBean.productList}"  
+	                 paginator="true" rows="10">  
+				  
+				        <p:column>  
+				            <f:facet name="header">  
+				                <h:outputText value="Sku" />  
+				            </f:facet>  
+				            <h:outputText value="#{prod.sku}" />  
+				        </p:column>  
+				  
+				  		<p:column>  
+				            <f:facet name="header">  
+				                <h:outputText value="Type" />  
+				            </f:facet>  
+				            <h:outputText value="#{prod.type}" />  
+				        </p:column> 
+				  
+				        <p:column>  
+				            <f:facet name="header">  
+				                <h:outputText value="Title" />  
+				            </f:facet>  
+				            <h:outputText value="#{prod.title}" />  
+				        </p:column>  
+				  
+				        <p:column>  
+				            <f:facet name="header">  
+				                <h:outputText value="Publisher" />  
+				            </f:facet>  
+				            <h:outputText value="#{prod.publisher}" />  
+				        </p:column>  
+				  
+	 			        <p:column>  
+				            <f:facet name="header">  
+				                <h:outputText value="Artist" />  
+				            </f:facet>  
+				            <h:outputText value="#{prod.details.artist}" />  
+				        </p:column>  
+	 					
+	 					<p:column>  
+				            <f:facet name="header">  
+				                <h:outputText value="Author" />  
+				            </f:facet>  
+				            <h:outputText value="#{prod.details.author}" />  
+				        </p:column>  
+	 					
+	  					<p:column>  
+				            <f:facet name="header">  
+				                <h:outputText value="Edit" />  
+				            </f:facet>  
+				             <p:commandButton value="Edit"  action="#{productSearchBean.doEditDetail}" ajax="false">
+				             	<f:setPropertyActionListener target="#{productSearchBean.selectedProduct}" value="#{prod}" />
+				             </p:commandButton>
+				        </p:column>  
+	 
+	 					<p:column>  
+				            <f:facet name="header">  
+				                <h:outputText value="Delete" />  
+				            </f:facet>
+				              
+				            <p:commandButton id="showDialogButton" value="Delete" oncomplete="confirmation.show()" ajax="true" update=":searchForm:confirmDialog">  
+				             	<f:setPropertyActionListener target="#{productSearchBean.selectedProduct}" value="#{prod}" />
+				            </p:commandButton>
+				            
+				        </p:column>
+	   					
+	 
+				    </p:dataTable>
+				 	
+				 	<p:confirmDialog id="confirmDialog" message="Are you sure to delete this product (#{productSearchBean.selectedProduct.sku})?"  
+				                header="Delete Product" severity="alert" widgetVar="confirmation">  
+				                  
+				        <p:commandButton id="confirm" value="Yes" update="mainGrowl" oncomplete="confirmation.hide()"  
+				                    actionListener="#{productSearchBean.doDelete}" />  
+				        <p:commandButton id="decline" value="No" onclick="confirmation.hide()" type="button" />   
+				                  
+				    </p:confirmDialog>
+				 	
+	    	</h:form>
+		</ui:define>
+	</ui:composition>
+</html>

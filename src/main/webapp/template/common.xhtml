@@ -1,0 +1,43 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html">
+
+	<h:head>
+
+		<f:facet name="first">
+			<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+			<title><ui:insert name="pageTitle">Page Title</ui:insert></title>
+			<ui:insert name="head" />
+		</f:facet>
+		
+		      
+	</h:head>
+
+	<h:body>
+		<div style="margin:auto;width:1024px;">
+			<div id="header" class="ui-widget" >
+				<div id="logo" style="border:1px  solid #acbece; border-bottom: none; ">
+					<p:graphicImage   value="/resources/image/mongoshopheader.jpg"/>					   
+				</div>
+				<div id="logo" style="border:1px solid #acbece;">
+				   <p:menubar style="border:none"> 					   	
+						<p:menuitem value="Search" url="/search.jsf" icon="ui-icon-search" /> 
+						<p:menuitem value="New Product" url="/detail.jsf" icon="ui-icon-document" />
+					</p:menubar>
+				</div>
+			</div>
+	
+	        <div id="page" class="ui-widget" style="overflow:hidden;">
+	            <div id="content"  style="display:block">
+	               <ui:insert name="content">...</ui:insert>     
+	            </div>
+	        </div>
+		</div>
+	</h:body>
+
+</f:view>
+</html>
